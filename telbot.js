@@ -34,10 +34,10 @@ bot.on('text', function(msg)
                break;
 	      case '/payment_methods':
 	       sendMessageByBot(messageChatId, showPaymentMethods(messageText[1]));
-	       break;
+	             break;
 	   default:
 	       sendMessageByBot(messageChatId, "I can't answer this :(");
-	       break;
+	             break;
 	   }
 
 	   console.log(msg);
@@ -49,14 +49,14 @@ function sendMessageByBot(aChatId, aMessage)
 }
 
 function showPaymentMethods(aPaymentMethod) {
-    switch (aPaymentMethod) {
-    case 'сбербанк':
-	aResponse='Карта Сбербанка: 4276 5500 1220 8552; Погорельцова И.Р. Комментарий: От кого (ФИО). Семинар (название и дата) ДД.ММ.ГГГГ. (Обязательно указывать от кого: полностью фамилия, имя, отчество.)';
-	return aResponse;
-	break;
-    default:
-	aResponse='Неизвестный способ оплаты';
-	return aResponse
-	break;
-    }
+      switch (aPaymentMethod) {
+        case 'сбербанк':
+	       aResponse='Карта Сбербанка: 4276 5500 1220 8552; Погорельцова И.Р. Комментарий: От кого (ФИО). Семинар (название и дата) ДД.ММ.ГГГГ. (Обязательно указывать от кого: полностью фамилия, имя, отчество.)';
+	       return aResponse;
+	       break;
+        default:
+	       aResponse='Неизвестный способ оплаты';
+	       return aResponse
+	       break;
+       }
 }
