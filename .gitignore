@@ -105,3 +105,13 @@ flycheck_*.el
 
 # directory configuration
 .dir-locals.el
+
+
+###### Examples ######
+
+*.example
+*.sample
+
+###### Test files ######
+
+test*

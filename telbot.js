@@ -10,6 +10,7 @@ var fs = require('fs');
 var content = fs.readFileSync('./config.json')
 var config = JSON.parse(content);
 var token = config.ApiToken;
+var paymentMethodsFile = "./paymentMethods.json";
 
 var bot = new TelegramBot(token, botOptions);
 
@@ -49,5 +50,12 @@ function sendMessageByBot(aChatId, aMessage)
 }
 
 function showPaymentMethods(aPaymentMethod) {
-      var pMethods = fs.readFile()
+      var pMethods = JSON.parse(fs.readFileSync(paymentMethodsFile));
+      var pMethodsList = Object.keys(pMethods);
+
+      if (pMethods[aPaymentMethod] === '') {
+        return "Доступны следующие методы оплаты:" + pMethodsList + '\n' + "Например, /payment_methods sber";
+      } else {
+        return pMethods[aPaymentMethod];
+      }
 }
