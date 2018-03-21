@@ -111,6 +111,7 @@ flycheck_*.el
 
 *.example
 *.sample
+config.json
 
 ###### Test files ######
 

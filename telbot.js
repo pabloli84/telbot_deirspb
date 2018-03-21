@@ -29,23 +29,21 @@ bot.on('text', function(msg)
 //	   var messageCmd = msg.text.split(" ");
 
 	   switch (String(messageText[0])) {
-	      case '/say':
+        case '/start':
+          var options = {
+            reply_markup: JSON.stringify({
+              keyboard: [
+                ['Способы оплаты'],
+                ['Регистрация на семинар']
+              ]
+            })
+          };
+          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!", options);
+               break;
+        case '/say':
 	       sendMessageByBot(messageChatId, "Hello World");
                break;
 	      case '/showpaymentoptions':
-	       //sendMessageByBot(messageChatId, showPaymentMethods(messageText[1]));
-
-/*        var opts = {
-            //reply_to_message_id: msg.message_id,
-            reply_markup: JSON.stringify({
-                inline_keyboard: [
-                    [{text:'Сбербанк', callbak_data:'1'}],
-                    [{text:'Альфа Банк', callbak_data:'2'}],
-                    [{text:'Безнал', callbak_data:'3'}]
-                ]
-            })
-          };
-            sendMessageByBot(messageChatId, "Выберете способ оплаты:", opts);*/
           var options = {
             reply_markup: JSON.stringify({
               inline_keyboard: [
@@ -56,7 +54,6 @@ bot.on('text', function(msg)
             })
           };
           bot.sendMessage(messageChatId, "Выберете способ оплаты:", options);
-
 	             break;
 	   default:
 	       sendMessageByBot(messageChatId, "I can't answer this :(");
