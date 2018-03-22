@@ -9,7 +9,8 @@ var fs = require('fs');
 var content = fs.readFileSync('./config.json')
 var config = JSON.parse(content);
 var token = config.ApiToken;
-var paymentMethodsFile = "./paymentMethods.json";
+const paymentMethodsFile = "./paymentMethods.json";
+const helpFile = "./help.md";
 
 var bot = new TelegramBot(token, botOptions);
 
@@ -26,7 +27,7 @@ bot.on('text', function(msg)
 	   var messageText = msg.text.split(" ");
 	   var messageDate = msg.date;
 	   var messageUsr = msg.from.username;
-//	   var messageCmd = msg.text.split(" ");
+	   var messageCmd = msg.text.split(" ");
 
 	   switch (String(messageText[0])) {
         case '/start':
@@ -55,6 +56,19 @@ bot.on('text', function(msg)
           };
           bot.sendMessage(messageChatId, "Выберете способ оплаты:", options);
 	             break;
+        case '/help':
+          fs.readFile(helpFile, function (err, data) {
+            if (!err) {
+              bot.sendMessage(messageChatId, data, {parse_mode: "Markdown"});
+            } else {
+                console.log(err);
+            }
+          })
+            break;
+        case '/info':
+          sendMessageByBot(messageChatId, "Я пока изучаю этот вопрос :)");
+          break;
+
 	   default:
 	       sendMessageByBot(messageChatId, "I can't answer this :(");
 	             break;
