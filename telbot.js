@@ -47,7 +47,7 @@ bot.on('text', function(msg)
               resize_keyboard: true
             })
           };
-          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!", options);
+          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!", /*options*/);
                break;
         case '/say':
 	       sendMessageByBot(messageChatId, "Hello World");
