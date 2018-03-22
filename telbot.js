@@ -9,7 +9,15 @@ var fs = require('fs');
 var content = fs.readFileSync('./config.json')
 var config = JSON.parse(content);
 var token = config.ApiToken;
-var paymentMethodsFile = "./paymentMethods.json";
+const paymentMethodsFile = "./paymentMethods.json";
+const helpFile = "./help.md";
+
+//Info links consts
+const scheduleURL = "http://spb-deir.ru/schedule/";
+const spbEmail = "spb@deir.org";
+const linkVKClub = "https://vk.com/club18968768";
+const linkFBGroup = "http://facebook.com/deirspb";
+const linkRegForSeminar = "http://spb-deir.ru/wp-content/plugins/formcraft/form.php?id=1"
 
 var bot = new TelegramBot(token, botOptions);
 
@@ -26,7 +34,7 @@ bot.on('text', function(msg)
 	   var messageText = msg.text.split(" ");
 	   var messageDate = msg.date;
 	   var messageUsr = msg.from.username;
-//	   var messageCmd = msg.text.split(" ");
+	   var messageCmd = msg.text.split(" ");
 
 	   switch (String(messageText[0])) {
         case '/start':
@@ -35,10 +43,11 @@ bot.on('text', function(msg)
               keyboard: [
                 ['Способы оплаты'],
                 ['Регистрация на семинар']
-              ]
+              ],
+              resize_keyboard: true
             })
           };
-          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!", options);
+          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!", options);
                break;
         case '/say':
 	       sendMessageByBot(messageChatId, "Hello World");
@@ -50,11 +59,37 @@ bot.on('text', function(msg)
                 [{text: 'Сбербанк', callback_data: "sber"}],
                 [{text: 'Альфабанк', callback_data: "alpha"}],
                 [{text: 'Безнал', callback_data: "beznal"}]
-              ]
+              ],
+              resize_keyboard: true
             })
           };
           bot.sendMessage(messageChatId, "Выберете способ оплаты:", options);
 	             break;
+        case '/help':
+          fs.readFile(helpFile, function (err, data) {
+            if (!err) {
+              bot.sendMessage(messageChatId, data, {parse_mode: "Markdown"});
+            } else {
+                console.log(err);
+            }
+          })
+            break;
+        case '/info':
+          //sendMessageByBot(messageChatId, "Я пока изучаю этот вопрос :)");
+          var options = {
+            reply_markup: JSON.stringify({
+              inline_keyboard: [
+                [{text: "Расписание", url: scheduleURL}],
+                //[{text: "E-mail", url: spbEmail}],
+                [{text: "VK", url: linkVKClub}],
+                [{text: "Facebook", url: linkFBGroup}],
+                [{text: "Регистрация на семинар", url: linkRegForSeminar}]
+              ]
+            })
+          };
+          bot.sendMessage(messageChatId, "Располагаю следующей информацией:", options);
+          break;
+
 	   default:
 	       sendMessageByBot(messageChatId, "I can't answer this :(");
 	             break;
