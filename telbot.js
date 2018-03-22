@@ -80,7 +80,7 @@ bot.on('text', function(msg)
             reply_markup: JSON.stringify({
               inline_keyboard: [
                 [{text: "Расписание", url: scheduleURL}],
-                [{text: "E-mail", url: spbEmail}],
+                //[{text: "E-mail", url: spbEmail}],
                 [{text: "VK", url: linkVKClub}],
                 [{text: "Facebook", url: linkFBGroup}],
                 [{text: "Регистрация на семинар", url: linkRegForSeminar}]
