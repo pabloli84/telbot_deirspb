@@ -17,7 +17,9 @@ const scheduleURL = "http://spb-deir.ru/schedule/";
 const spbEmail = "spb@deir.org";
 const linkVKClub = "https://vk.com/club18968768";
 const linkFBGroup = "http://facebook.com/deirspb";
-const linkRegForSeminar = "http://spb-deir.ru/wp-content/plugins/formcraft/form.php?id=1"
+const linkRegForSeminar = "http://spb-deir.ru/wp-content/plugins/formcraft/form.php?id=1";
+const linkCourse12El = "https://www.ozon.ru/context/detail/id/143770484/";
+const linkCourse34El = "https://www.ozon.ru/context/detail/id/143647781/";
 
 var bot = new TelegramBot(token, botOptions);
 
@@ -47,7 +49,7 @@ bot.on('text', function(msg)
               resize_keyboard: true
             })
           };
-          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!", /*options*/);
+          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!" /*, options*/);
                break;
         case '/say':
 	       sendMessageByBot(messageChatId, "Hello World");
@@ -83,7 +85,8 @@ bot.on('text', function(msg)
                 //[{text: "E-mail", url: spbEmail}],
                 [{text: "VK", url: linkVKClub}],
                 [{text: "Facebook", url: linkFBGroup}],
-                [{text: "Регистрация на семинар", url: linkRegForSeminar}]
+                [{text: "Регистрация на семинар", url: linkRegForSeminar}],
+                [{text: "Книги", callback_data: "books"}]
               ]
             })
           };
@@ -106,7 +109,21 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery){
     message_id: msg.message_id
   };
   let text;
-  bot.editMessageText(showPaymentMethods(action), opts);
+  if (action === 'books') {
+    var keyboard = {
+      reply_markup: JSON.stringify({
+        inline_keyboard: [
+          [{text: "Полный учебный курс 1-2 ступени", url:linkCourse12El},
+          {text: "Полный учебный курс 3-4 ступени", url:linkCourse34El}]
+        ]
+      }),
+      chat_id: msg.chat.id,
+      message_id: msg.message_id
+    };
+    bot.editMessageText("Ссылки на электронные книги", keyboard);
+  } else {
+    bot.editMessageText(showPaymentMethods(action), opts);
+  }
 });
 
 function sendMessageByBot(aChatId, aMessage)
