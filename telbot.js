@@ -20,6 +20,8 @@ const linkFBGroup = "http://facebook.com/deirspb";
 const linkRegForSeminar = "http://spb-deir.ru/wp-content/plugins/formcraft/form.php?id=1";
 const linkCourse12El = "https://www.ozon.ru/context/detail/id/143770484/";
 const linkCourse34El = "https://www.ozon.ru/context/detail/id/143647781/";
+const linkCourse12Paper = "https://www.ozon.ru/context/detail/id/143765992/";
+const linkCourse34Paper = "https://www.ozon.ru/context/detail/id/143653923/";
 
 var bot = new TelegramBot(token, botOptions);
 
@@ -113,8 +115,10 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery){
     var keyboard = {
       reply_markup: JSON.stringify({
         inline_keyboard: [
-          [{text: "Полный учебный курс 1-2 ступени", url:linkCourse12El},
-          {text: "Полный учебный курс 3-4 ступени", url:linkCourse34El}]
+          [{text: "Полный учебный курс 1-2 ступени (E-Book)", url:linkCourse12El},
+           {text: "Полный учебный курс 3-4 ступени (E-Book)", url:linkCourse34El}],
+          [{text: "Полный учебный курс по 1-2 ступени (Бумага)", url:linkCourse12Paper},
+           {text: "Полный учебный курс по 3-4 ступени (Бумага)", url:linkCourse34Paper}]
         ]
       }),
       chat_id: msg.chat.id,
