@@ -1,0 +1,22 @@
+{
+  "name": "telbot_deirspb",
+  "version": "1.0.0",
+  "description": "DeirSPB Telegram Bot",
+  "main": "telbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pabloli84/telbot_deirspb.git"
+  },
+  "author": "Pavel Li",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pabloli84/telbot_deirspb/issues"
+  },
+  "homepage": "https://github.com/pabloli84/telbot_deirspb#readme",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}

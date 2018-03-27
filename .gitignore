@@ -116,3 +116,7 @@ config.json
 ###### Test files ######
 
 test*
+
+##### WebStorm ######
+
+.idea
