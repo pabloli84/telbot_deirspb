@@ -57,12 +57,13 @@ bot.on('text', function(msg)
 	       sendMessageByBot(messageChatId, "Hello World");
                break;
 	      case '/showpaymentoptions':
+          case 'Способы оплаты':
             options = {
             reply_markup: JSON.stringify({
               inline_keyboard: [
-                [{text: 'Сбербанк', callback_data: "sber"}],
-                [{text: 'Альфабанк', callback_data: "alpha"}],
-                [{text: 'Безнал', callback_data: "beznal"}]
+                [{text: 'Сбербанк', callback_data: "sber"},
+                {text: 'Альфабанк', callback_data: "alpha"}],
+                [{text: 'Безналичный расчёт', callback_data: "beznal"}]
               ],
               resize_keyboard: true
             })
@@ -72,7 +73,7 @@ bot.on('text', function(msg)
         case '/help':
           fs.readFile(helpFile, function (err, data) {
             if (!err) {
-              bot.sendMessage(messageChatId, data, {parse_mode: "Markdown"});
+              this.sendMessage(messageChatId, data, {parse_mode: "Markdown"});
             } else {
                 console.log(err);
             }
@@ -92,7 +93,7 @@ bot.on('text', function(msg)
               ]
             })
           };
-          bot.sendMessage(messageChatId, "Располагаю следующей информацией:", options);
+          this.sendMessage(messageChatId, "Располагаю следующей информацией:", options);
           break;
 
 	   default:
@@ -114,18 +115,18 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery){
     let keyboard = {
       reply_markup: JSON.stringify({
         inline_keyboard: [
-          [{text: "Полный учебный курс 1-2 ступени (E-Book)", url:linkCourse12El},
-           {text: "Полный учебный курс 3-4 ступени (E-Book)", url:linkCourse34El}],
-          [{text: "Полный учебный курс по 1-2 ступени (Бумага)", url:linkCourse12Paper},
-           {text: "Полный учебный курс по 3-4 ступени (Бумага)", url:linkCourse34Paper}]
+          [{text: "Полный учебный курс 1-2 ступени (E-Book)", url:linkCourse12El}],
+          [{text: "Полный учебный курс 3-4 ступени (E-Book)", url:linkCourse34El}],
+          [{text: "Полный учебный курс по 1-2 ступени (Бумага)", url:linkCourse12Paper}],
+           [{text: "Полный учебный курс по 3-4 ступени (Бумага)", url:linkCourse34Paper}]
         ]
       }),
       chat_id: msg.chat.id,
       message_id: msg.message_id
     };
-    bot.editMessageText("Ссылки на электронные и бумажные книги", keyboard);
+    this.editMessageText("Ссылки на электронные и бумажные книги", keyboard);
   } else {
-    bot.editMessageText(showPaymentMethods(action), opts);
+    this.editMessageText(showPaymentMethods(action), opts);
   }
 });
 
