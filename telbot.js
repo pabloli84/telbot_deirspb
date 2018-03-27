@@ -73,7 +73,7 @@ bot.on('text', function(msg)
         case '/help':
           fs.readFile(helpFile, function (err, data) {
             if (!err) {
-              this.sendMessage(messageChatId, data, {parse_mode: "Markdown"});
+              bot.sendMessage(messageChatId, data, {parse_mode: "Markdown"});
             } else {
                 console.log(err);
             }
