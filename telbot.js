@@ -1,18 +1,17 @@
-var TelegramBot = require('node-telegram-bot-api');
-var config = require('./config.json');
-var botOptions = {
+let TelegramBot = require('node-telegram-bot-api');
+let botOptions = {
     polling: true
 };
 
-var fs = require('fs');
+let fs = require('fs');
 
-var content = fs.readFileSync('./config.json')
-var config = JSON.parse(content);
-var token = config.ApiToken;
+let content = fs.readFileSync('./config.json');
+let config = JSON.parse(content);
+let token = config.ApiToken;
 const paymentMethodsFile = "./paymentMethods.json";
 const helpFile = "./help.md";
 
-//Info links consts
+//Info links const's
 const scheduleURL = "http://spb-deir.ru/schedule/";
 const spbEmail = "spb@deir.org";
 const linkVKClub = "https://vk.com/club18968768";
@@ -23,7 +22,7 @@ const linkCourse34El = "https://www.ozon.ru/context/detail/id/143647781/";
 const linkCourse12Paper = "https://www.ozon.ru/context/detail/id/143765992/";
 const linkCourse34Paper = "https://www.ozon.ru/context/detail/id/143653923/";
 
-var bot = new TelegramBot(token, botOptions);
+let bot = new TelegramBot(token, botOptions);
 
 bot.getMe().then(function(me)
 		 {
@@ -34,15 +33,16 @@ bot.getMe().then(function(me)
 
 bot.on('text', function(msg)
        {
-	   var messageChatId = msg.chat.id;
-	   var messageText = msg.text.split(" ");
-	   var messageDate = msg.date;
-	   var messageUsr = msg.from.username;
-	   var messageCmd = msg.text.split(" ");
+	   let messageChatId = msg.chat.id;
+	   let messageText = msg.text.split(" ");
+	   let messageDate = msg.date;
+	   let messageUsr = msg.from.username;
+	   let messageCmd = msg.text.split(" ");
+	   let options;
 
 	   switch (String(messageText[0])) {
         case '/start':
-          var options = {
+          options = {
             reply_markup: JSON.stringify({
               keyboard: [
                 ['Способы оплаты'],
@@ -51,13 +51,13 @@ bot.on('text', function(msg)
               resize_keyboard: true
             })
           };
-          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!" /*, options*/);
+          this.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!" /*, options*/);
                break;
         case '/say':
 	       sendMessageByBot(messageChatId, "Hello World");
                break;
 	      case '/showpaymentoptions':
-          var options = {
+            options = {
             reply_markup: JSON.stringify({
               inline_keyboard: [
                 [{text: 'Сбербанк', callback_data: "sber"}],
@@ -76,11 +76,11 @@ bot.on('text', function(msg)
             } else {
                 console.log(err);
             }
-          })
+          });
             break;
         case '/info':
           //sendMessageByBot(messageChatId, "Я пока изучаю этот вопрос :)");
-          var options = {
+          options = {
             reply_markup: JSON.stringify({
               inline_keyboard: [
                 [{text: "Расписание", url: scheduleURL}],
@@ -110,9 +110,8 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery){
     chat_id: msg.chat.id,
     message_id: msg.message_id
   };
-  let text;
   if (action === 'books') {
-    var keyboard = {
+    let keyboard = {
       reply_markup: JSON.stringify({
         inline_keyboard: [
           [{text: "Полный учебный курс 1-2 ступени (E-Book)", url:linkCourse12El},
@@ -124,7 +123,7 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery){
       chat_id: msg.chat.id,
       message_id: msg.message_id
     };
-    bot.editMessageText("Ссылки на электронные книги", keyboard);
+    bot.editMessageText("Ссылки на электронные и бумажные книги", keyboard);
   } else {
     bot.editMessageText(showPaymentMethods(action), opts);
   }
@@ -136,8 +135,8 @@ function sendMessageByBot(aChatId, aMessage)
 }
 
 function showPaymentMethods(aPaymentMethod) {
-      var pMethods = JSON.parse(fs.readFileSync(paymentMethodsFile));
-      var pMethodsList = Object.keys(pMethods);
+      let pMethods = JSON.parse(fs.readFileSync(paymentMethodsFile));
+      let pMethodsList = Object.keys(pMethods);
 
       //console.log("Выбранный метод оплаты: " + aPaymentMethod);
       //if (aPaymentMethod === null) return "Укажите один из доступных методов оплаты: " + pMethodsList;
