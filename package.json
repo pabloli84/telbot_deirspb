@@ -16,7 +16,7 @@
     "url": "https://github.com/pabloli84/telbot_deirspb/issues"
   },
   "engines": {
-    "node": "4.1.1"
+    "node": "6.10.2"
   },
   "homepage": "https://github.com/pabloli84/telbot_deirspb#readme",
   "dependencies": {
