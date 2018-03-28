@@ -15,6 +15,9 @@
   "bugs": {
     "url": "https://github.com/pabloli84/telbot_deirspb/issues"
   },
+  "engines": {
+    "node": "4.1.1"
+  },
   "homepage": "https://github.com/pabloli84/telbot_deirspb#readme",
   "dependencies": {
     "node-telegram-bot-api": "^0.30.0"
