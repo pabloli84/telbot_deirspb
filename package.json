@@ -21,5 +21,6 @@
   "homepage": "https://github.com/pabloli84/telbot_deirspb#readme",
   "dependencies": {
     "node-telegram-bot-api": "^0.30.0"
-  }
+  },
+  "devDependencies": {}
 }
