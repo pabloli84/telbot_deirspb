@@ -1,7 +1,11 @@
 let TelegramBot = require('node-telegram-bot-api');
 let botOptions = {
-    polling: true
+    //polling: true
+    webhook: {
+        port: process.env.PORT
+    }
 };
+const url = process.env.APP_URL;
 
 let fs = require('fs');
 
@@ -23,6 +27,8 @@ const linkCourse12Paper = "https://www.ozon.ru/context/detail/id/143765992/";
 const linkCourse34Paper = "https://www.ozon.ru/context/detail/id/143653923/";
 
 let bot = new TelegramBot(token, botOptions);
+
+bot.setWebHook(`{$url}/bot$API_TOKEN`);
 
 bot.getMe().then(function(me)
 		 {
