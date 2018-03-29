@@ -1,1 +1,1 @@
-bot: node telbot.js
+web: node telbot.js
