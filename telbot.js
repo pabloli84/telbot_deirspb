@@ -86,8 +86,7 @@ bot.on('text', function(msg)
               inline_keyboard: [
                 [{text: "Расписание", url: scheduleURL}],
                 //[{text: "E-mail", url: spbEmail}],
-                [{text: "VK", url: linkVKClub}],
-                [{text: "Facebook", url: linkFBGroup}],
+                [{text: "VK", url: linkVKClub}, {text: "Facebook", url: linkFBGroup}],
                 [{text: "Регистрация на семинар", url: linkRegForSeminar}],
                 [{text: "Книги", callback_data: "books"}]
               ]
