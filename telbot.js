@@ -5,9 +5,9 @@ let botOptions = {
 
 let fs = require('fs');
 
-let content = fs.readFileSync('./config.json');
-let config = JSON.parse(content);
-let token = config.ApiToken;
+//let content = fs.readFileSync('./config.json');
+//let config = JSON.parse(content);
+let token = process.env.API_TOKEN;
 const paymentMethodsFile = "./paymentMethods.json";
 const helpFile = "./help.md";
 
