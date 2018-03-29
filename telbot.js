@@ -29,16 +29,18 @@ const linkCourse34Paper = "https://www.ozon.ru/context/detail/id/143653923/";
 let bot = new TelegramBot(token, botOptions);
 
 bot.setWebHook(`${url}/bot${token}`);
-/*
+bot.openWebHook();
+
 bot.getMe().then(function(me)
 		 {
 		     console.log('Hello! My name is %s!', me.first_name);
 		     console.log('My id is %s.', me.id);
 		     console.log('And my username is @%s.', me.username);
 		 });
-*/
-bot.on('message', function(msg)
-       {
+
+
+bot.on('text', function(msg) {
+    console.log("I'm inside");
 	   let messageChatId = msg.chat.id;
 	   let messageText = msg.text.split(" ");
 	   let messageDate = msg.date;
