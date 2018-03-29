@@ -1,1 +1,0 @@
-bot: node telbot.js
