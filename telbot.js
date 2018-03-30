@@ -53,7 +53,6 @@ bot.getMe().then(function(me)
 
 
 bot.on('text', function(msg) {
-    console.log("I'm inside");
 	   let messageChatId = msg.chat.id;
 	   let messageText = msg.text.split(" ");
 	   let messageDate = msg.date;
