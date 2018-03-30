@@ -105,7 +105,7 @@ bot.on('text', function(msg) {
             reply_markup: JSON.stringify({
               inline_keyboard: [
                 [{text: "Расписание", url: scheduleURL}],
-                //[{text: "E-mail", url: spbEmail}],
+                [{text: "E-mail", callback_data: "spbEmail"}],
                 [{text: "VK", url: linkVKClub}, {text: "Facebook", url: linkFBGroup}],
                 [{text: "Регистрация на семинар", url: linkRegForSeminar}],
                 [{text: "Книги", callback_data: "books"}]
@@ -137,13 +137,15 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery){
           [{text: "Полный учебный курс 1-2 ступени (E-Book)", url:linkCourse12El}],
           [{text: "Полный учебный курс 3-4 ступени (E-Book)", url:linkCourse34El}],
           [{text: "Полный учебный курс по 1-2 ступени (Бумага)", url:linkCourse12Paper}],
-           [{text: "Полный учебный курс по 3-4 ступени (Бумага)", url:linkCourse34Paper}]
+          [{text: "Полный учебный курс по 3-4 ступени (Бумага)", url:linkCourse34Paper}]
         ]
       }),
       chat_id: msg.chat.id,
       message_id: msg.message_id
     };
     this.editMessageText("Ссылки на электронные и бумажные книги", keyboard);
+  } else if (action === 'spbEmail') {
+    this.editMessageText(spbEmail, opts);
   } else {
     this.editMessageText(showPaymentMethods(action), opts);
   }
