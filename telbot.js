@@ -6,8 +6,8 @@ let botOptions = {
     }
 };
 const url = process.env.APP_URL;
-
 let fs = require('fs');
+
 
 //let content = fs.readFileSync('./config.json');
 //let config = JSON.parse(content);
@@ -29,7 +29,17 @@ const linkCourse34Paper = "https://www.ozon.ru/context/detail/id/143653923/";
 let bot = new TelegramBot(token, botOptions);
 
 bot.setWebHook(`${url}/bot${token}`);
-bot.openWebHook();
+
+let express = require('express');
+const app = express();
+app.use(bodyParser.json());
+app.post(`/bot${TOKEN}`, (req, res) => {
+    bot.processUpdate(req.body);
+    res.sendStatus(200);
+});
+app.listen(port, () => {
+    console.log(`Express server is listening on ${port}`);
+});
 
 bot.getMe().then(function(me)
 		 {
