@@ -2,11 +2,12 @@
 const url = process.env.APP_URL;
 const port = process.env.PORT;
 const environment = process.env.ENVIRONMENT;
-
 const util = require("util");
-let fs = require('fs');
 
-let token = process.env.API_TOKEN;
+const fs = require('fs');
+const emailSender = require('./sendmail');
+
+const token = process.env.API_TOKEN;
 const paymentMethodsFile = "./paymentMethods.json";
 const helpFile = "./help.md";
 
@@ -196,7 +197,11 @@ bot.on('text', function(msg) {
                                         .then(() => {
                                             bot.once("text", (msg) => {
                                                 if (msg.text === "Yes") {
-                                                    bot.sendMessage(msg.chat.id, "Отправлено");
+                                                    if (emailSender.sendEmail(user_name + ' ' + user_lastname, emailData)){
+                                                        bot.sendMessage(msg.chat.id, "Отправлено");
+                                                    } else {
+                                                        bot.sendMessage(msg.chat.id, "Ошибка при отправки заявки");
+                                                    }
                                                 } else {
                                                     bot.sendMessage(msg.chat.id, "Отменено");
                                                 }
@@ -263,3 +268,4 @@ function showPaymentMethods(aPaymentMethod) {
         return "Доступны следующие методы оплаты: " + pMethodsList + '\n' + "Например, /payment_methods sber";
       }
 }
+
