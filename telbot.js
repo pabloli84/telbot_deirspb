@@ -215,7 +215,7 @@ bot.on('text', function(msg) {
            console.log(msg);
            break;
         case "Cancel":
-               bot.sendMessage(messageChatId, "Отменено");
+               bot.sendMessage(messageChatId, "Отменено", {reply_markup:{remove_keyboard:true}});
           break;
 	   default:
 	       // sendMessageByBot(messageChatId, "I can't answer this :(");
