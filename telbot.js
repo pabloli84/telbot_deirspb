@@ -185,8 +185,8 @@ bot.on('text', function(msg) {
                                         reply_force: true,
                                         reply_markup: {
                                             one_time_keyboard: true,
-                                            keyboard: [
-                                                [{text: "Yes"}, {text: "No"}]
+                                            inline_keyboard: [
+                                                [{text: "Yes", callback_data: "regYes"}, {text: "No", callback_data: "regNo"}]
                                             ]
                                         }
                                     };
@@ -196,15 +196,19 @@ bot.on('text', function(msg) {
 
                                     bot.sendMessage(msg.chat.id, emailData + '\n' + 'Отправить?', options)
                                         .then(() => {
-                                            bot.once("text", (msg) => {
-                                                if (msg.text === "Yes") {
+                                            bot.once("callback_query", (msg) => {
+                                                const opts = {
+                                                    chat_id: msg.chat.id,
+                                                    message_id: msg.message_id
+                                                };
+                                                if (msg.data === "regYes") {
                                                     if (!emailSender.sendEmail(user_name + ' ' + user_lastname, emailData)){
-                                                        bot.sendMessage(msg.chat.id, "Отправлено, благодарю за регистрацию!\nАдминистратор свяжется с Вами в ближайшее время!", {reply_markup:{remove_keyboard:true}});
+                                                        bot.editMessageText("Отправлено, благодарю за регистрацию!\nАдминистратор свяжется с Вами в ближайшее время!", opts);
                                                     } else {
-                                                        bot.sendMessage(msg.chat.id, "Ошибка при отправки заявки", {reply_markup:{remove_keyboard:true}});
+                                                        bot.editMessageText("Ошибка при отправки заявки", opts);
                                                     }
                                                 } else {
-                                                    bot.sendMessage(msg.chat.id, "Отменено", {reply_markup:{remove_keyboard:true}});
+                                                    bot.editMessageText("Отменено", opts);
                                                 }
                                             });
                                         });
@@ -248,9 +252,9 @@ bot.on('callback_query', function onCallbackQuery(callbackQuery){
     };
     this.editMessageText("Ссылки на электронные и бумажные книги", keyboard);
   } else if (action === 'spbEmail') {
-    this.editMessageText(spbEmail, opts);
-  } else {
-    this.editMessageText(showPaymentMethods(action), opts);
+        this.editMessageText(spbEmail, opts);
+  } else if (action === 'sber' || action === 'alpha' || action === "beznal") {
+        this.editMessageText(showPaymentMethods(action), opts);
   }
 });
 
@@ -266,7 +270,7 @@ function showPaymentMethods(aPaymentMethod) {
       if (pMethods[aPaymentMethod]) {
         return pMethods[aPaymentMethod];
       } else {
-        return "Доступны следующие методы оплаты: " + pMethodsList + '\n' + "Например, /payment_methods sber";
+        return "Способ оплаты " + aPaymentMethod + " не найден";
       }
 }
 
