@@ -199,12 +199,12 @@ bot.on('text', function(msg) {
                                             bot.once("text", (msg) => {
                                                 if (msg.text === "Yes") {
                                                     if (!emailSender.sendEmail(user_name + ' ' + user_lastname, emailData)){
-                                                        bot.sendMessage(msg.chat.id, "Отправлено", {remove_keyboard:true});
+                                                        bot.sendMessage(msg.chat.id, "Отправлено", {reply_markup:{remove_keyboard:true}});
                                                     } else {
-                                                        bot.sendMessage(msg.chat.id, "Ошибка при отправки заявки", {remove_keyboard:true});
+                                                        bot.sendMessage(msg.chat.id, "Ошибка при отправки заявки", {reply_markup:{remove_keyboard:true}});
                                                     }
                                                 } else {
-                                                    bot.sendMessage(msg.chat.id, "Отменено");
+                                                    bot.sendMessage(msg.chat.id, "Отменено", {reply_markup:{remove_keyboard:true}});
                                                 }
                                             });
                                         });
