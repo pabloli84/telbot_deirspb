@@ -1,26 +1,32 @@
-var mailer = require('nodemailer');
+function sendEmail(fromName, emailData) {
+    const mailer = require('nodemailer');
 
-var transporter = mailer.createTransport({
-    host: 'smtp.yandex.ru',
-    port: 465,
-    secure: true,
-    auth: {
-	user: 'pabloli@yandex.ru',
-	pass: 'ICstwtn47:)'
-    }
-});
+    const transporter = mailer.createTransport({
+        host: process.env.EMAIL_SMTP_HOST,
+        port: 465,
+        secure: true,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+        });
 
-var mailOptions = {
-    from: 'pabloli@yandex.ru',
-    to: 'pablol@mail.ru',
-    subject: 'Test node mailer',
-    html: '<h3>This is email sent from Node.Js</h3>'
-};
+    const mailOptions = {
+            from: process.env.EMAIL_FROM,
+            to: process.env.EMAIL_TO,
+            subject: 'Запись на семинар от ' + fromName,
+            html: emailData
+    };
 
-transporter.sendMail (mailOptions, function(error, info){
-    if (error) {
-	console.log(error);
-    } else {
-	console.log('Email sent: ' + info.response);
-    }
-});
+    transporter.sendMail (mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+            return false;
+        } else {
+            console.log('Email sent: ' + info.response);
+            return true;
+        }
+    });
+}
+
+exports.sendEmail = sendEmail;
