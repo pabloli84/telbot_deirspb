@@ -197,7 +197,7 @@ bot.on('text', function(msg) {
                                         .then(() => {
                                             bot.once("text", (msg) => {
                                                 if (msg.text === "Yes") {
-                                                    if (emailSender.sendEmail(user_name + ' ' + user_lastname, emailData)){
+                                                    if (!emailSender.sendEmail(user_name + ' ' + user_lastname, emailData)){
                                                         bot.sendMessage(msg.chat.id, "Отправлено");
                                                     } else {
                                                         bot.sendMessage(msg.chat.id, "Ошибка при отправки заявки");

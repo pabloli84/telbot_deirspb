@@ -15,7 +15,7 @@ function sendEmail(fromName, emailData) {
             from: process.env.EMAIL_FROM,
             to: process.env.EMAIL_TO,
             subject: 'Запись на семинар от ' + fromName,
-            html: emailData
+            text: emailData
     };
 
     transporter.sendMail (mailOptions, function(error, info){
