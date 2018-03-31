@@ -1,17 +1,11 @@
-let TelegramBot = require('node-telegram-bot-api');
-let botOptions = {
-    //polling: true
-    webhook: {
-        port: process.env.PORT
-    }
-};
+
 const url = process.env.APP_URL;
 const port = process.env.PORT;
+const environment = proces.env.ENVIRONMENT;
 let fs = require('fs');
 
 
-//let content = fs.readFileSync('./config.json');
-//let config = JSON.parse(content);
+
 let token = process.env.API_TOKEN;
 const paymentMethodsFile = "./paymentMethods.json";
 const helpFile = "./help.md";
@@ -27,22 +21,39 @@ const linkCourse34El = "https://www.ozon.ru/context/detail/id/143647781/";
 const linkCourse12Paper = "https://www.ozon.ru/context/detail/id/143765992/";
 const linkCourse34Paper = "https://www.ozon.ru/context/detail/id/143653923/";
 
-let bot = new TelegramBot(token, botOptions);
+let TelegramBot = require('node-telegram-bot-api');
 
-bot.setWebHook(`${url}/bot${token}`);
+if (environment === "DEV") {
+    const botOptions = {
+        polling: true
+    };
+    let bot = new TelegramBot(token, botOptions);
+} else if (environment === "PROD"){
+    const botOptions = {
+        webhook: {
+            port: process.env.PORT
+        }
+    };
+    let bot = new TelegramBot(token, botOptions);
 
-const express = require('express');
-const bodyParser = require('body-parser');
+    //set web-hook
+    bot.setWebHook(`${url}/bot${token}`);
 
-const app = express();
-app.use(bodyParser.json());
-app.post(`/bot${token}`, (req, res) => {
-    bot.processUpdate(req.body);
-    res.sendStatus(200);
-});
-app.listen(port, () => {
-    console.log(`Express server is listening on ${port}`);
-});
+    //Initialize express
+    const express = require('express');
+    const bodyParser = require('body-parser');
+
+    //Start listening to port for catching web-hooks
+    const app = express();
+    app.use(bodyParser.json());
+    app.post(`/bot${token}`, (req, res) => {
+        bot.processUpdate(req.body);
+        res.sendStatus(200);
+    });
+    app.listen(port, () => {
+        console.log(`Express server is listening on ${port}`);
+    });
+}
 
 bot.getMe().then(function(me)
 		 {
@@ -115,7 +126,9 @@ bot.on('text', function(msg) {
           };
           this.sendMessage(messageChatId, "Располагаю следующей информацией:", options);
           break;
-
+        case '/register':
+            console.log("Here will b e registration form");
+            break;
 	   default:
 	       sendMessageByBot(messageChatId, "I can't answer this :(");
 	             break;
