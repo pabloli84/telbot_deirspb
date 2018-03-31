@@ -1,10 +1,10 @@
 
 const url = process.env.APP_URL;
 const port = process.env.PORT;
-const environment = proces.env.ENVIRONMENT;
+const environment = process.env.ENVIRONMENT;
+
+const util = require("util");
 let fs = require('fs');
-
-
 
 let token = process.env.API_TOKEN;
 const paymentMethodsFile = "./paymentMethods.json";
@@ -22,19 +22,21 @@ const linkCourse12Paper = "https://www.ozon.ru/context/detail/id/143765992/";
 const linkCourse34Paper = "https://www.ozon.ru/context/detail/id/143653923/";
 
 let TelegramBot = require('node-telegram-bot-api');
+let botOptions;
+let bot;
 
 if (environment === "DEV") {
-    const botOptions = {
+    botOptions = {
         polling: true
     };
-    let bot = new TelegramBot(token, botOptions);
+    bot = new TelegramBot(token, botOptions);
 } else if (environment === "PROD"){
-    const botOptions = {
+    botOptions = {
         webhook: {
             port: process.env.PORT
         }
     };
-    let bot = new TelegramBot(token, botOptions);
+    bot = new TelegramBot(token, botOptions);
 
     //set web-hook
     bot.setWebHook(`${url}/bot${token}`);
@@ -63,6 +65,31 @@ bot.getMe().then(function(me)
 		 });
 
 
+// bot.onText(/^\/register/, function (msg, match){
+//     let options = {
+//         reply_markup: JSON.stringify({
+//             one_time_keyboard: true,
+//             keyboard: [
+//                 [{text: "Предоставить номер телефона", request_contact: true}],
+//                 [{text: 'Cancel'}]
+//             ]
+//         })
+//     };
+//
+//     bot.sendMessage(msg.chat.id, "Пожлауйста отправьте Ваш номер телефона, нажав на кнопку", options)
+//         .then(() => {
+//             bot.on("contact", (msg) => {
+//                 console.log(msg);
+//                 bot.sendMessage(msg.chat.id,
+//                     util.format("Итак, Вас зовут %s %s и Ваш номер телефона %s",
+//                         msg.contact.first_name,
+//                         msg.contact.last_name,
+//                         msg.contact.phone_number));
+//             });
+//         });
+//     console.log(msg);
+// });
+
 bot.on('text', function(msg) {
 	   let messageChatId = msg.chat.id;
 	   let messageText = msg.text.split(" ");
@@ -82,13 +109,13 @@ bot.on('text', function(msg) {
               resize_keyboard: true
             })
           };
-          this.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!" /*, options*/);
-               break;
+          bot.sendMessage(messageChatId, "ДЭИР СПб Бот приветствует тебя!\nНабери /help, чтобы узнать, что я могу!");
+        break;
         case '/say':
 	       sendMessageByBot(messageChatId, "Hello World");
-               break;
-	      case '/showpaymentoptions':
-          case 'Способы оплаты':
+        break;
+        case '/showpaymentoptions':
+        case 'Способы оплаты':
             options = {
             reply_markup: JSON.stringify({
               inline_keyboard: [
@@ -109,9 +136,9 @@ bot.on('text', function(msg) {
                 console.log(err);
             }
           });
-            break;
+          break;
+        //Show informational menu
         case '/info':
-          //sendMessageByBot(messageChatId, "Я пока изучаю этот вопрос :)");
           options = {
             reply_markup: JSON.stringify({
               inline_keyboard: [
@@ -123,18 +150,75 @@ bot.on('text', function(msg) {
               ]
             })
           };
-          this.sendMessage(messageChatId, "Располагаю следующей информацией:", options);
+          bot.sendMessage(messageChatId, "Располагаю следующей информацией:", options);
           break;
-        case '/register':
-            console.log("Here will b e registration form");
-            break;
+        case "/register":
+            let phone_num;
+            let user_name;
+            let user_lastname;
+           options = {
+               reply_markup: JSON.stringify({
+                   one_time_keyboard: true,
+                   keyboard: [
+                       [{text: "Предоставить номер телефона", request_contact: true}],
+                       [{text: 'Cancel'}]
+                   ]
+               })
+           };
+
+           bot.sendMessage(messageChatId, "Пожлауйста отправьте Ваш номер телефона, нажав на кнопку", options)
+               .then(() => {
+                   bot.once("contact", (msg) => {
+                       console.log(msg);
+                       phone_num = msg.contact.phone_number;
+                       user_name = msg.contact.first_name;
+                       user_lastname = msg.contact.last_name;
+                       options = {
+                         reply_force:true
+                       };
+                       bot.sendMessage(msg.chat.id, "Введите дату в формате мм.дд.гг и название семинара через пробел:", options)
+                           .then(() => {
+                                bot.once("text", (msg) => {
+                                    options = {
+                                        reply_force: true,
+                                        reply_markup: {
+                                            one_time_keyboard: true,
+                                            keyboard: [
+                                                [{text: "Yes"}, {text: "No"}]
+                                            ]
+                                        }
+                                    };
+                                    let emailData = util.format("Данные заявки:\nФамилия: %s\nИмя: %s\nТелефон:%s\nДата и название семинара: %s",
+                                                                user_lastname, user_name, phone_num, msg.text);
+                                    console.log(emailData);
+
+                                    bot.sendMessage(msg.chat.id, emailData + '\n' + 'Отправить?', options)
+                                        .then(() => {
+                                            bot.once("text", (msg) => {
+                                                if (msg.text === "Yes") {
+                                                    bot.sendMessage(msg.chat.id, "Отправлено");
+                                                } else {
+                                                    bot.sendMessage(msg.chat.id, "Отменено");
+                                                }
+                                            });
+                                        });
+                                });
+                           });
+                   });
+               });
+           console.log(msg);
+           break;
+        case "Cancel":
+               bot.sendMessage(messageChatId, "Отменено");
+          break;
 	   default:
-	       sendMessageByBot(messageChatId, "I can't answer this :(");
+	       // sendMessageByBot(messageChatId, "I can't answer this :(");
 	             break;
 	   }
 
 	   console.log(msg);
        });
+
 
 bot.on('callback_query', function onCallbackQuery(callbackQuery){
   const action = callbackQuery.data;
@@ -172,9 +256,6 @@ function sendMessageByBot(aChatId, aMessage)
 function showPaymentMethods(aPaymentMethod) {
       let pMethods = JSON.parse(fs.readFileSync(paymentMethodsFile));
       let pMethodsList = Object.keys(pMethods);
-
-      //console.log("Выбранный метод оплаты: " + aPaymentMethod);
-      //if (aPaymentMethod === null) return "Укажите один из доступных методов оплаты: " + pMethodsList;
 
       if (pMethods[aPaymentMethod]) {
         return pMethods[aPaymentMethod];
