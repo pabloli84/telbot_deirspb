@@ -154,10 +154,7 @@ bot.on('text', function(msg) {
           bot.sendMessage(messageChatId, "Располагаю следующей информацией:", options);
           break;
         case "/register":
-            let phone_num;
-            let user_name;
-            let user_lastname;
-           options = {
+          options = {
                reply_markup: JSON.stringify({
                    one_time_keyboard: true,
                    keyboard: [
@@ -169,6 +166,10 @@ bot.on('text', function(msg) {
 
            bot.sendMessage(messageChatId, "Пожлауйста отправьте Ваш номер телефона, нажав на кнопку", options)
                .then(() => {
+                   let phone_num;
+                   let user_name;
+                   let user_lastname;
+
                    bot.once("contact", (msg) => {
                        console.log(msg);
                        phone_num = msg.contact.phone_number;
