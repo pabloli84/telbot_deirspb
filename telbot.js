@@ -153,7 +153,7 @@ bot.on('text', function(msg) {
           };
           bot.sendMessage(messageChatId, "Располагаю следующей информацией:", options);
           break;
-        case "/register":
+        /*case "/register":
           options = {
                reply_markup: JSON.stringify({
                    one_time_keyboard: true,
@@ -213,7 +213,7 @@ bot.on('text', function(msg) {
                    });
                });
            console.log(msg);
-           break;
+           break;*/
         case "Cancel":
                bot.sendMessage(messageChatId, "Отменено", {reply_markup:{remove_keyboard:true}});
           break;
