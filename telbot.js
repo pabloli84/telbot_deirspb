@@ -120,8 +120,8 @@ bot.on('text', function(msg) {
             options = {
             reply_markup: JSON.stringify({
               inline_keyboard: [
-                [{text: 'Сбербанк', callback_data: "sber"},
-                {text: 'Альфабанк', callback_data: "alpha"}],
+                [{text: 'Карта Сбербанка', callback_data: "sber"},
+                {text: 'Карта Альфабанка', callback_data: "alpha"}],
                 [{text: 'Безналичный расчёт', callback_data: "beznal"}]
               ],
               resize_keyboard: true
