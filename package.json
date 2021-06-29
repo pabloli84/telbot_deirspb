@@ -23,7 +23,7 @@
   "dependencies": {
     "express": "^4.16.3",
     "node-telegram-bot-api": "^0.30.0",
-    "nodemailer": "^4.6.3"
+    "nodemailer": "^6.6.1"
   },
   "devDependencies": {}
 }
